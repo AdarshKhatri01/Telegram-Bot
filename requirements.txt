@@ -1,0 +1,14 @@
+python-telegram-bot
+requests
+python-dotenv
+
+
+# 1. python-telegram-bot → Telegram bot ke liye
+# 2. requests → Hugging Face API call karne ke liye
+# 3. asyncio (Already built-in in Python)
+
+
+# AGAR ERROR AYE TO EK BAAR UPDATE KRKE DEKE
+# pip install python-telegram-bot --upgrade
+# pip install requests
+
