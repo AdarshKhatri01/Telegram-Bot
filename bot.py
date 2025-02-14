@@ -1,8 +1,10 @@
 import os
 import requests
+import time
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.error import NetworkError, Conflict
 
 
 load_dotenv()
@@ -48,7 +50,16 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot is running...")
-    app.run_polling()
 
+    while True:
+        try:
+            app.run_polling()
+        except Conflict:
+            print("⚠ Another instance is running! Retrying in 5 seconds...")
+            time.sleep(5)  # Wait for 5 seconds before retrying
+        except NetworkError:
+            print("⚠ Network error! Retrying in 5 seconds...")
+            time.sleep(5)
+            
 if __name__ == "__main__":
     main()
