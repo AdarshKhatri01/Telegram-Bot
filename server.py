@@ -1,17 +1,26 @@
 from flask import Flask
-import threading
-import bot  # bot.py ko import kar rahe hain
+import subprocess
+import os
+import time
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route("/")
 def home():
     return "Bot is running!"
 
-# Flask ko alag thread pe run karein
+# Flask Server ko Run Karein
 def run_flask():
     app.run(host="0.0.0.0", port=8080)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_flask).start()
-    bot.main()  # bot.py ka main() function call karein
+    # Bot sirf ek hi baar chale, iske liye process check karein
+    while True:
+        # Check karein ki bot chal raha hai ya nahi
+        bot_running = os.popen("pgrep -f bot.py").read().strip()
+        
+        if not bot_running:
+            print("🚀 Starting bot...")
+            subprocess.Popen(["python", "bot.py"])  # Bot start karein
+
+        time.sleep(10)  # 10 second me ek baar check karein
